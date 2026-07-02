@@ -19,7 +19,7 @@ import (
 )
 
 func main() {
-    client, err := grout.ConnectDefault()
+    client, err := grout.Connect()
     if err != nil {
         log.Fatal(err)
     }
@@ -48,7 +48,7 @@ if err != nil {
 err = client.InterfaceSet(grout.InterfaceSetRequest{
     IfaceID: id,
     Flags:   grout.IfaceFlagUp,
-    SetFlags: grout.IfaceSetFlags,
+    SetAttrs: grout.IfaceSetFlags,
 })
 ```
 
@@ -75,7 +75,7 @@ err = client.IP4RouteAdd(grout.IP4RouteAddRequest{
 ## List Interfaces
 
 ```go
-ifaces, err := client.InterfaceList(grout.IfaceTypePort)
+ifaces, err := client.InterfaceList(grout.WithIfaceType(grout.IfaceTypePort))
 if err != nil {
     log.Fatal(err)
 }
@@ -140,7 +140,7 @@ for _, entry := range entries {
 ## Error Handling
 
 ```go
-client, err := grout.Connect("/tmp/grout.sock")
+client, err := grout.Connect(grout.WithSocketPath("/tmp/grout.sock"))
 if err != nil {
     // Check specific error types
     var grErr *grout.GrError
